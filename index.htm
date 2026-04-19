@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>沙漠倾城消消乐</title>
+<title>沙漠倾城网页消消乐</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto}
   body{
@@ -54,7 +54,7 @@
 <body>
 <div class="game-wrap">
   <div class="top">
-    <div class="title">沙漠倾城消消乐</div>
+    <div class="title">沙漠倾城网页消消乐</div>
     <div class="info">
       <div class="box">分数 <span id="score">0</span></div>
       <div class="box">关卡 <span id="level">1</span></div>
@@ -132,4 +132,110 @@ function render(){
       board.appendChild(div);
     });
   });
-  scoreEl.textConten
+  scoreEl.textContent=score;
+  levelEl.textContent=level;
+  stepsEl.textContent=steps;
+}
+
+function click(r,c){
+  if(steps<=0)return;
+  const cell=document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+  if(!selected){selected={r,c};cell.classList.add('selected');return;}
+  const sr=selected.r,sc=selected.c;
+  const dist=Math.abs(r-sr)+Math.abs(c-sc);
+  if(dist!==1){clearSel();selected={r,c};cell.classList.add('selected');return;}
+  swap(sr,sc,r,c);
+  if(hasMatch()){
+    steps--;play('click');clearSel();
+    setTimeout(process,150);
+  }else{swap(sr,sc,r,c);clearSel();}
+}
+
+function swap(r1,c1,r2,c2){[grid[r1][c1],grid[r2][c2]]=[grid[r2][c2],grid[r1][c1]];render();}
+function clearSel(){document.querySelectorAll('.cell.selected').forEach(d=>d.classList.remove('selected'));selected=null;}
+
+function hasMatch(){
+  for(let r=0;r<size;r++)for(let c=0;c<size-2;c++){
+    const v=grid[r][c];
+    if(v&&v===grid[r][c+1]&&v===grid[r][c+2])return true;
+  }
+  for(let c=0;c<size;c++)for(let r=0;r<size-2;r++){
+    const v=grid[r][c];
+    if(v&&v===grid[r+1][c]&&v===grid[r+2][c])return true;
+  }
+  return false;
+}
+
+function getMatches(){
+  let match=new Set();
+  for(let r=0;r<size;r++)for(let c=0;c<size-2;c++){
+    const v=grid[r][c];
+    if(v&&v===grid[r][c+1]&&v===grid[r][c+2]){
+      match.add(`${r},${c}`);match.add(`${r},${c+1}`);match.add(`${r},${c+2}`);
+    }
+  }
+  for(let c=0;c<size;c++)for(let r=0;r<size-2;r++){
+    const v=grid[r][c];
+    if(v&&v===grid[r+1][c]&&v===grid[r+2][c]){
+      match.add(`${r},${c}`);match.add(`${r+1},${c}`);match.add(`${r+2},${c}`);
+    }
+  }
+  return Array.from(match).map(s=>s.split(',').map(Number));
+}
+
+function process(){
+  const matches=getMatches();
+  if(matches.length===0){
+    if(steps<=0){msgEl.textContent='步数用完啦，重来一局！';return;}
+    if(score>=level*500){level++;steps+=15;msgEl.textContent='🎉 过关！步数+15';setTimeout(()=>msgEl.textContent='',1500);}
+    return;
+  }
+  matches.forEach(([r,c])=>{
+    const div=document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+    div.classList.add('pop');
+    setTimeout(()=>div.classList.remove('pop'),350);
+  });
+  play('pop');
+  score+=matches.length*10;
+  matches.forEach(([r,c])=>grid[r][c]=null);
+  setTimeout(fill,300);
+}
+
+function fill(){
+  for(let c=0;c<size;c++){
+    let col=[];
+    for(let r=0;r<size;r++)if(grid[r][c])col.push(grid[r][c]);
+    const newCol=[...Array(size-col.length).fill(null),...col];
+    for(let r=0;r<size;r++)grid[r][c]=newCol[r];
+  }
+  for(let r=0;r<size;r++)for(let c=0;c<size;c++){
+    if(!grid[r][c])grid[r][c]=rand();
+  }
+  render();
+  setTimeout(process,200);
+}
+
+function play(type){
+  try{
+    const a=new AudioContext();
+    const o=a.createOscillator();
+    const g=a.createGain();
+    o.connect(g);g.connect(a.destination);
+    if(type==='pop'){o.frequency.value=620;g.gain.value=0.16;o.start();o.stop(a.currentTime+0.12);}
+    if(type==='click'){o.frequency.value=840;g.gain.value=0.11;o.start();o.stop(a.currentTime+0.08);}
+  }catch(e){}
+}
+
+restartBtn.addEventListener('click',()=>{score=0;level=1;steps=30;grid=makeGrid();render();msgEl.textContent='';});
+skinBtn.addEventListener('click',()=>{
+  skinIndex=(skinIndex+1)%skins.length;
+  icons=skins[skinIndex].icons;
+  skinBtn.textContent=`换皮肤(${skins[skinIndex].name})`;
+  grid=makeGrid();render();
+});
+
+grid=makeGrid();render();
+skinBtn.textContent=`换皮肤(${skins[0].name})`;
+</script>
+</body>
+</html>
