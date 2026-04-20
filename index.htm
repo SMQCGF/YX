@@ -7,59 +7,105 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto}
   body{
-    background: radial-gradient(circle at top, #2b2d42, #12141d);
-    min-height:100vh;display:flex;justify-content:center;align-items:center;padding:10px;color:#fff;
+    background: radial-gradient(circle at top, #1f1b2e, #0f0c18);
+    min-height:100vh;display:flex;justify-content:center;align-items:center;padding:8px;color:#fff;
   }
   .game-wrap{
-    background: linear-gradient(145deg, rgba(40,44,65,0.9), rgba(26,28,42,0.9));
-    border-radius:24px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.45), 0 0 40px rgba(120,110,255,0.15);
-    padding:20px;max-width:440px;width:100%;backdrop-filter: blur(10px);
+    background: linear-gradient(145deg, rgba(36,32,56,0.95), rgba(18,15,30,0.95));
+    border-radius:22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 40px rgba(180,140,255,0.2);
+    padding:16px;max-width:480px;width:100%;backdrop-filter: blur(10px);
+    border:1px solid rgba(200,180,255,0.18);
   }
-  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-  .title{font-size:22px;font-weight:800;background:linear-gradient(90deg,#a8b8ff,#e0a8ff);-webkit-background-clip:text;color:transparent}
-  .info{display:flex;gap:10px}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .title{
+    font-size:19px;font-weight:900;
+    background:linear-gradient(90deg,#f0c8ff,#b89cff,#8cb6ff);
+    -webkit-background-clip:text;color:transparent;
+    text-shadow:0 0 16px rgba(180,140,255,0.4);
+  }
+  .time{
+    font-size:13px;color:#d4c4ff;font-weight:700;background:rgba(255,255,255,0.08);
+    padding:5px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.15)
+  }
+  .info{
+    display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;
+  }
   .box{
-    background:rgba(255,255,255,0.08);
-    padding:10px 14px;border-radius:14px;font-size:14px;font-weight:700;color:#e6e9ff;
-    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(255,255,255,0.09);
+    padding:8px 9px;border-radius:11px;font-size:13px;font-weight:700;color:#f0e8ff;
+    border:1px solid rgba(255,255,255,0.15);text-align:center;
   }
-  .board{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:12px 0}
+  .board{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:10px 0}
   .cell{
-    width:100%;aspect-ratio:1/1;border-radius:18px;
-    display:flex;align-items:center;justify-content:center;font-size:28px;
+    width:100%;aspect-ratio:1/1;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;font-size:17px;
     cursor:pointer;transition:all .2s ease;
-    background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(0,0,0,0.2));
-    border:1px solid rgba(255,255,255,0.18);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+    background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(0,0,0,0.28));
+    border:1px solid rgba(255,255,255,0.22);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
   }
-  .cell:hover{transform:scale(1.06)}
-  .cell.selected{outline:3px solid #9fa8ff;outline-offset:2px}
+  .cell:hover{transform:scale(1.04)}
+  .cell.selected{outline:2px solid #c4a8ff;outline-offset:1px}
   .cell.pop{animation:pop .35s ease}
-  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.22)}100%{transform:scale(1)}}
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
   .cell.fall{animation:fall .4s ease}
-  @keyframes fall{from{transform:translateY(-140px);opacity:0}to{transform:translateY(0);opacity:1}}
-  .btns{display:flex;gap:10px;margin-top:12px}
+  @keyframes fall{from{transform:translateY(-120px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .btns{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
   button{
-    flex:1;padding:14px;border:none;border-radius:16px;
-    background:linear-gradient(90deg,#7c7bff,#b87bff);
+    flex:1;padding:10px;border:none;border-radius:14px;
+    background:linear-gradient(90deg,#9a8bff,#d48bff);
     color:#fff;font-weight:800;cursor:pointer;transition:.25s;
-    box-shadow:0 8px 20px rgba(124,123,255,0.35)
+    box-shadow:0 7px 18px rgba(154,139,255,0.4)
   }
-  button:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(124,123,255,0.45)}
-  button.gray{background:linear-gradient(90deg,#3a3c5a,#4b4d70);color:#e6e9ff}
-  .msg{text-align:center;margin-top:12px;font-weight:800;color:#c8b6ff;height:26px}
+  button:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(154,139,255,0.5)}
+  button.gray{background:linear-gradient(90deg,#322e4a,#443f66);color:#e8e0ff}
+  .msg{text-align:center;margin-top:8px;font-weight:800;color:#d8c4ff;height:24px}
+  .footer{
+    text-align:center;margin-top:12px;font-size:12px;
+    color:#c8b6ff;opacity:0.9;padding-top:6px;
+    border-top:1px solid rgba(255,255,255,0.1);line-height:1.4;
+  }
+  .footer a{color:#c8b6ff;text-decoration:none;}
+  .ruleBtn{
+    margin-top:5px;text-align:center;
+  }
+  .ruleBtn button{
+    padding:7px 12px;font-size:12px;background:linear-gradient(90deg,#5a527a,#7a6a9a);
+  }
+  .ruleBox{
+    position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);
+    display:flex;justify-content:center;align-items:center;z-index:999;display:none;
+  }
+  .ruleContent{
+    background:#25213a;border-radius:16px;padding:18px;max-width:320px;width:90%;
+    border:1px solid rgba(200,180,255,0.3);color:#e8e0ff;
+  }
+  .ruleContent h3{
+    text-align:center;margin-bottom:10px;color:#f0d4ff;font-size:15px;
+  }
+  .ruleContent p{
+    margin:5px 0;font-size:12px;line-height:1.4
+  }
+  .closeRule{
+    margin-top:12px;width:100%;padding:9px;border-radius:11px;background:#7a6aff;color:#fff;border:none;font-weight:700
+  }
 </style>
 </head>
 <body>
 <div class="game-wrap">
   <div class="top">
     <div class="title">沙漠倾城官方音乐消消乐</div>
-    <div class="info">
-      <div class="box">分数 <span id="score">0</span></div>
-      <div class="box">关卡 <span id="level">1</span></div>
-      <div class="box">步数 <span id="steps">30</span></div>
-    </div>
+    <div class="time" id="time">00:00</div>
+  </div>
+  <div class="info">
+    <div class="box">分数 <span id="score">0</span></div>
+    <div class="box">关卡 <span id="level">1</span></div>
+    <div class="box">步数 <span id="steps">30</span></div>
+    <div class="box">体力 <span id="energy">100</span></div>
+  </div>
+  <div class="ruleBtn">
+    <button id="openRule">📜 游戏规则</button>
   </div>
   <div class="board" id="board"></div>
   <div class="btns">
@@ -67,47 +113,108 @@
     <button id="skin" class="gray">换皮肤</button>
   </div>
   <div class="msg" id="msg"></div>
+  <div class="footer">
+    沙漠倾城官方音乐网站<br>
+    <a href="https://smqcgf.github.io/com/" target="_blank">https://smqcgf.github.io/com/</a>
+  </div>
 </div>
+
+<div class="ruleBox" id="ruleBox">
+  <div class="ruleContent">
+    <h3>游戏规则</h3>
+    <p>• 点击交换相邻图案，连成3个即可消除</p>
+    <p>• 每点击一次消耗 1 点体力</p>
+    <p>• 体力无上限，初始100，通关奖励100体力</p>
+    <p>• 每过 1 分钟自动扣除 10 体力</p>
+    <p>• 分数每增加100分，体力+10</p>
+    <p>• 达到目标分数即可过关，步数增加</p>
+    <p>• 可切换皮肤：小动物 / 水果 / 宝石</p>
+    <button class="closeRule" id="closeRule">关闭</button>
+  </div>
+</div>
+
+<audio id="bgm" loop>
+  <source src="https://github.com/SMQCGF/com/raw/main/%E9%82%A3%E5%A4%A9%E4%B8%8B%E9%9B%A8%E4%BA%86.mp3" type="audio/mpeg">
 
 <script>
 const board=document.getElementById('board');
 const scoreEl=document.getElementById('score');
 const levelEl=document.getElementById('level');
 const stepsEl=document.getElementById('steps');
+const energyEl=document.getElementById('energy');
 const msgEl=document.getElementById('msg');
+const timeEl=document.getElementById('time');
 const restartBtn=document.getElementById('restart');
 const skinBtn=document.getElementById('skin');
+const bgm=document.getElementById('bgm');
+const ruleBox=document.getElementById('ruleBox');
+const openRule=document.getElementById('openRule');
+const closeRule=document.getElementById('closeRule');
 
-const size=6;
+// 面板：竖10 × 横8
+const rows=10;
+const cols=8;
 let score=0,level=1,steps=30;
+let energy=100; // 初始体力100，无上限
 let grid=[];
 let selected=null;
 let skinIndex=0;
+let startTime=Date.now();
+let lastScore=0;
 
-// ✅ 全新立体透明、色差明显、大气图案（无白底、不伤眼）
 const skins=[
-  {
-    name:'高级糖果',
-    icons:['🍭','🍬','🍡','🍧','🍫','🍮']
-  },
-  {
-    name:'清新水果',
-    icons:['🍇','🍓','🍑','🍍','🥝','🍒']
-  },
-  {
-    name:'璀璨宝石',
-    icons:['💎','🔮','💠','💍','💎','💎']
-  }
+  {name:'萌趣小动物',icons:['🐰','🐻','🐸','🐵','🐶','🐱']},
+  {name:'立体水果',icons:['🍇','🍓','🍑','🍍','🥝','🍒']},
+  {name:'星辰宝石',icons:['💎','🔮','💠','💍','💎','💎']}
 ];
 
 let icons=skins[0].icons;
 
+// 时间显示
+function updateTime(){
+  const sec=Math.floor((Date.now()-startTime)/1000);
+  const m=String(Math.floor(sec/60)).padStart(2,'0');
+  const s=String(sec%60).padStart(2,'0');
+  timeEl.textContent=`${m}:${s}`;
+}
+setInterval(updateTime,1000);
+
+// 每分钟扣10体力
+setInterval(()=>{
+  energy=Math.max(0,energy-10);
+  render();
+  if(energy<=0) msgEl.textContent='💔 体力不足！';
+},60000);
+
+// 分数每100分+10体力
+function checkScoreBonus(){
+  const add=Math.floor((score-lastScore)/100)*10;
+  if(add>0){
+    energy+=add;
+    lastScore=Math.floor(score/100)*100;
+  }
+}
+
+function playBGM(){
+  bgm.play().catch(e=>{});
+}
+
+function play(type){
+  if(type==='click'){
+    if(navigator.vibrate) navigator.vibrate(20);
+  }
+  if(type==='pop'){
+    if(navigator.vibrate) navigator.vibrate([30,20,30]);
+  }
+}
+
 function rand(){return icons[Math.floor(Math.random()*icons.length)]}
+
 function makeGrid(){
   let g=[];
-  for(let r=0;r<size;r++){
+  for(let r=0;r<rows;r++){
     let row=[];
-    for(let c=0;c<size;c++){
+    for(let c=0;c<cols;c++){
       let v;
       do{v=rand()}while(
         (c>=2&&row[c-1]==v&&row[c-2]==v)||
@@ -135,31 +242,70 @@ function render(){
   scoreEl.textContent=score;
   levelEl.textContent=level;
   stepsEl.textContent=steps;
+  energyEl.textContent=energy;
+}
+
+function checkEnergy(){
+  if(energy<=0){
+    msgEl.textContent='💔 体力不足！';
+    return false;
+  }
+  return true;
 }
 
 function click(r,c){
+  if(!checkEnergy()) return;
   if(steps<=0)return;
+
+  energy=Math.max(0,energy-1);
   const cell=document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
-  if(!selected){selected={r,c};cell.classList.add('selected');return;}
+  
+  if(!selected){
+    selected={r,c};
+    cell.classList.add('selected');
+    render();
+    return;
+  }
+
   const sr=selected.r,sc=selected.c;
   const dist=Math.abs(r-sr)+Math.abs(c-sc);
-  if(dist!==1){clearSel();selected={r,c};cell.classList.add('selected');return;}
+  if(dist!==1){
+    clearSel();
+    selected={r,c};
+    cell.classList.add('selected');
+    render();
+    return;
+  }
+
   swap(sr,sc,r,c);
   if(hasMatch()){
-    steps--;play('click');clearSel();
+    steps--;
+    play('click');
+    clearSel();
     setTimeout(process,150);
-  }else{swap(sr,sc,r,c);clearSel();}
+  }else{
+    swap(sr,sc,r,c);
+    clearSel();
+  }
+  render();
 }
 
-function swap(r1,c1,r2,c2){[grid[r1][c1],grid[r2][c2]]=[grid[r2][c2],grid[r1][c1]];render();}
-function clearSel(){document.querySelectorAll('.cell.selected').forEach(d=>d.classList.remove('selected'));selected=null;}
+function swap(r1,c1,r2,c2){
+  [grid[r1][c1],grid[r2][c2]]=[grid[r2][c2],grid[r1][c1]];
+  render();
+}
+
+function clearSel(){
+  document.querySelectorAll('.cell.selected').forEach(d=>d.classList.remove('selected'));
+  selected=null;
+}
 
 function hasMatch(){
-  for(let r=0;r<size;r++)for(let c=0;c<size-2;c++){
+  for(let r=0;r<rows;r++)for(let c=0;c<cols-2;c++){
     const v=grid[r][c];
     if(v&&v===grid[r][c+1]&&v===grid[r][c+2])return true;
   }
-  for(let c=0;c<size;c++)for(let r=0;r<size-2;r++){
+  for(let c=0;c<cols;c++)for(let r=0;r<rows-2;r++){
     const v=grid[r][c];
     if(v&&v===grid[r+1][c]&&v===grid[r+2][c])return true;
   }
@@ -168,13 +314,13 @@ function hasMatch(){
 
 function getMatches(){
   let match=new Set();
-  for(let r=0;r<size;r++)for(let c=0;c<size-2;c++){
+  for(let r=0;r<rows;r++)for(let c=0;c<cols-2;c++){
     const v=grid[r][c];
     if(v&&v===grid[r][c+1]&&v===grid[r][c+2]){
       match.add(`${r},${c}`);match.add(`${r},${c+1}`);match.add(`${r},${c+2}`);
     }
   }
-  for(let c=0;c<size;c++)for(let r=0;r<size-2;r++){
+  for(let c=0;c<cols;c++)for(let r=0;r<rows-2;r++){
     const v=grid[r][c];
     if(v&&v===grid[r+1][c]&&v===grid[r+2][c]){
       match.add(`${r},${c}`);match.add(`${r+1},${c}`);match.add(`${r+2},${c}`);
@@ -186,10 +332,21 @@ function getMatches(){
 function process(){
   const matches=getMatches();
   if(matches.length===0){
-    if(steps<=0){msgEl.textContent='步数用完啦，重来一局！';return;}
-    if(score>=level*500){level++;steps+=15;msgEl.textContent='🎉 过关！步数+15';setTimeout(()=>msgEl.textContent='',1500);}
+    if(steps<=0){
+      msgEl.textContent='🎵 步数用完，再来一曲！';
+      return;
+    }
+    if(score>=level*600){
+      level++;
+      steps+=20;
+      energy+=100; // 通关+100体力（无上限）
+      msgEl.textContent='⭐ 倾城过关！体力+100';
+      setTimeout(()=>msgEl.textContent='',1500);
+    }
+    render();
     return;
   }
+
   matches.forEach(([r,c])=>{
     const div=document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
     div.classList.add('pop');
@@ -197,45 +354,52 @@ function process(){
   });
   play('pop');
   score+=matches.length*10;
+  checkScoreBonus(); // 分数奖励体力
   matches.forEach(([r,c])=>grid[r][c]=null);
   setTimeout(fill,300);
+  render();
 }
 
 function fill(){
-  for(let c=0;c<size;c++){
+  for(let c=0;c<cols;c++){
     let col=[];
-    for(let r=0;r<size;r++)if(grid[r][c])col.push(grid[r][c]);
-    const newCol=[...Array(size-col.length).fill(null),...col];
-    for(let r=0;r<size;r++)grid[r][c]=newCol[r];
+    for(let r=0;r<rows;r++)if(grid[r][c])col.push(grid[r][c]);
+    const newCol=[...Array(rows-col.length).fill(null),...col];
+    for(let r=0;r<rows;r++)grid[r][c]=newCol[r];
   }
-  for(let r=0;r<size;r++)for(let c=0;c<size;c++){
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
     if(!grid[r][c])grid[r][c]=rand();
   }
   render();
-  setTimeout(process,200);
+  setTimeout(()=>{
+    document.querySelectorAll('.cell').forEach(d=>d.classList.add('fall'));
+    setTimeout(()=>document.querySelectorAll('.cell').forEach(d=>d.classList.remove('fall')),400);
+    setTimeout(process,450);
+  },50);
 }
 
-function play(type){
-  try{
-    const a=new AudioContext();
-    const o=a.createOscillator();
-    const g=a.createGain();
-    o.connect(g);g.connect(a.destination);
-    if(type==='pop'){o.frequency.value=620;g.gain.value=0.16;o.start();o.stop(a.currentTime+0.12);}
-    if(type==='click'){o.frequency.value=840;g.gain.value=0.11;o.start();o.stop(a.currentTime+0.08);}
-  }catch(e){}
+function init(){
+  score=0;steps=30;lastScore=0;
+  grid=makeGrid();
+  msgEl.textContent='';
+  render();
 }
 
-restartBtn.addEventListener('click',()=>{score=0;level=1;steps=30;grid=makeGrid();render();msgEl.textContent='';});
+restartBtn.addEventListener('click',init);
 skinBtn.addEventListener('click',()=>{
   skinIndex=(skinIndex+1)%skins.length;
   icons=skins[skinIndex].icons;
-  skinBtn.textContent=`换皮肤(${skins[skinIndex].name})`;
-  grid=makeGrid();render();
+  msgEl.textContent=`🎨 已切换：${skins[skinIndex].name}`;
+  setTimeout(()=>msgEl.textContent='',1200);
+  grid=makeGrid();
+  render();
 });
 
-grid=makeGrid();render();
-skinBtn.textContent=`换皮肤(${skins[0].name})`;
+openRule.addEventListener('click',()=>ruleBox.style.display='flex');
+closeRule.addEventListener('click',()=>ruleBox.style.display='none');
+
+document.addEventListener('click',playBGM,{once:true});
+init();
 </script>
 </body>
 </html>
