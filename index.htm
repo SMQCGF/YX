@@ -44,6 +44,8 @@
     background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(0,0,0,0.28));
     border:1px solid rgba(255,255,255,0.22);
     box-shadow: 0 3px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+    transform: translateZ(0);
+    will-change: transform, opacity;
   }
   .cell:hover{transform:scale(1.04)}
   .cell.selected{outline:2px solid #c4a8ff;outline-offset:1px}
@@ -66,29 +68,115 @@
     color:#c8b6ff;opacity:0.9;padding-top:6px;
     border-top:1px solid rgba(255,255,255,0.1);line-height:1.4;
   }
-  .footer a{color:#c8b6ff;text-decoration:none;}
+  .nav-links{
+    display:flex;justify-content:center;gap:20px;flex-wrap:wrap;
+    margin-top:6px;margin-bottom:8px;
+  }
+  .nav-links a{
+    color:#c8b6ff;text-decoration:none;transition:color 0.2s;
+    font-size:12px;padding:4px 8px;border-radius:6px;
+  }
+  .nav-links a:hover{
+    color:#f0d4ff;background:rgba(200,180,255,0.1);
+    text-shadow:0 0 6px rgba(220,190,255,0.8)
+  }
+  .contact-btn{
+    display:inline-block;margin-top:4px;padding:6px 12px;
+    background:rgba(200,180,255,0.15);color:#e0d0ff;border-radius:8px;
+    text-decoration:none;font-size:12px;border:1px solid rgba(255,255,255,0.2);
+    cursor:pointer;transition:all 0.2s;
+  }
+  .contact-btn:hover{
+    background:rgba(200,180,255,0.25);color:#fff;
+  }
   .ruleBtn{
     margin-top:5px;text-align:center;
   }
   .ruleBtn button{
     padding:7px 12px;font-size:12px;background:linear-gradient(90deg,#5a527a,#7a6a9a);
   }
-  .ruleBox{
+  .ruleBox,.contactBox{
     position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);
     display:flex;justify-content:center;align-items:center;z-index:999;display:none;
   }
-  .ruleContent{
+  .ruleContent,.contactContent{
     background:#25213a;border-radius:16px;padding:18px;max-width:320px;width:90%;
     border:1px solid rgba(200,180,255,0.3);color:#e8e0ff;
   }
-  .ruleContent h3{
+  .ruleContent h3,.contactContent h3{
     text-align:center;margin-bottom:10px;color:#f0d4ff;font-size:15px;
   }
   .ruleContent p{
     margin:5px 0;font-size:12px;line-height:1.4
   }
-  .closeRule{
+  .contactContent p{
+    margin:8px 0;font-size:12px;line-height:1.5;
+  }
+  .contact-item{
+    display:flex;align-items:center;gap:8px;margin:6px 0;
+  }
+  .contact-label{
+    min-width:60px;color:#d4c4ff;font-weight:600;
+  }
+  .contact-value{
+    color:#f0e8ff;word-break:break-all;
+  }
+  .closeRule,.closeContact{
     margin-top:12px;width:100%;padding:9px;border-radius:11px;background:#7a6aff;color:#fff;border:none;font-weight:700
+  }
+  /* 添加官方链接三行显示的样式 */
+  .official-links {
+    margin: 8px 0 12px 0;
+    padding: 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .link-row {
+    margin: 6px 0;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    transition: all 0.2s;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .link-row:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(200,180,255,0.3);
+    transform: translateX(3px);
+  }
+  .official-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #f0e4ff;
+    font-size: 12px;
+    width: 100%;
+  }
+  .link-icon {
+    width: 24px;
+    font-size: 14px;
+    text-align: center;
+    margin-right: 8px;
+    filter: drop-shadow(0 0 4px rgba(180,140,255,0.6));
+  }
+  .link-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s;
+  }
+  .official-link:hover .link-text {
+    color: #fff;
+    text-shadow: 0 0 6px rgba(220,190,255,0.8);
+  }
+  .link-url {
+    color: #a89cc8;
+    font-size: 10px;
+    margin-left: 32px;
+    margin-top: 2px;
+    word-break: break-all;
   }
 </style>
 </head>
@@ -114,11 +202,15 @@
   </div>
   <div class="msg" id="msg"></div>
   <div class="footer">
-    沙漠倾城官方音乐网站<br>
-    <a href="https://smqcgf.github.io/com/" target="_blank">https://smqcgf.github.io/com/</a>
+    <div class="nav-links">
+      <a href="https://smqcgf.github.io/com/" target="_blank">沙漠倾城官方音乐网站</a>
+      <a href="https://smqcgf.github.io/JSQ/" target="_blank">沙漠倾城官方音乐计算器</a>
+    </div>
+    <a href="#" class="contact-btn" id="openContact">📞 联系沙漠倾城</a>
   </div>
 </div>
 
+<!-- 游戏规则弹窗 -->
 <div class="ruleBox" id="ruleBox">
   <div class="ruleContent">
     <h3>游戏规则</h3>
@@ -133,8 +225,68 @@
   </div>
 </div>
 
+<!-- 联系弹窗 -->
+<div class="contactBox" id="contactBox">
+  <div class="contactContent">
+    <h3>🌵 沙漠倾城 联系方式</h3>
+    <div class="contact-item">
+      <span class="contact-label">微信</span>
+      <span class="contact-value">18962500118</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">QQ</span>
+      <span class="contact-value">18962500118</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">邮箱1</span>
+      <span class="contact-value">18962500118@qq.com</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">邮箱2</span>
+      <span class="contact-value">674058055@qq.com</span>
+    </div>
+    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:12px 0">
+    <div style="text-align:center;margin-top:10px;">
+      <p style="color:#c8b6ff;font-size:11px;line-height:1.3;">
+        独立流行音乐人 | 中国音乐著作权协会会员<br>
+        用音乐诠释生活与爱情的深刻感悟
+      </p>
+    </div>
+    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:12px 0">
+    
+    <!-- 修改后的三行链接显示区域 -->
+    <div class="official-links">
+      <h4 style="text-align:center;color:#e0d4ff;font-size:12px;margin-bottom:8px;">🌐 官方链接</h4>
+      <div class="link-row">
+        <a href="https://smqcgf.github.io/com/" target="_blank" class="official-link">
+          <span class="link-icon">🎵</span>
+          <span class="link-text">沙漠倾城官方音乐网站</span>
+        </a>
+        <div class="link-url">https://smqcgf.github.io/com/</div>
+      </div>
+      <div class="link-row">
+        <a href="https://smqcgf.github.io/YX/" target="_blank" class="official-link">
+          <span class="link-icon">🎮</span>
+          <span class="link-text">沙漠倾城官方音乐消消乐</span>
+        </a>
+        <div class="link-url">https://smqcgf.github.io/YX/</div>
+      </div>
+      <div class="link-row">
+        <a href="https://smqcgf.github.io/JSQ/" target="_blank" class="official-link">
+          <span class="link-icon">🧮</span>
+          <span class="link-text">沙漠倾城官方音乐计算器</span>
+        </a>
+        <div class="link-url">https://smqcgf.github.io/JSQ/</div>
+      </div>
+    </div>
+    
+    <button class="closeContact" id="closeContact">关闭</button>
+  </div>
+</div>
+
 <audio id="bgm" loop>
   <source src="https://github.com/SMQCGF/com/raw/main/%E9%82%A3%E5%A4%A9%E4%B8%8B%E9%9B%A8%E4%BA%86.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 const board=document.getElementById('board');
@@ -150,17 +302,21 @@ const bgm=document.getElementById('bgm');
 const ruleBox=document.getElementById('ruleBox');
 const openRule=document.getElementById('openRule');
 const closeRule=document.getElementById('closeRule');
+const contactBox=document.getElementById('contactBox');
+const openContact=document.getElementById('openContact');
+const closeContact=document.getElementById('closeContact');
 
 // 面板：竖10 × 横8
 const rows=10;
 const cols=8;
 let score=0,level=1,steps=30;
-let energy=100; // 初始体力100，无上限
+let energy=100; 
 let grid=[];
 let selected=null;
 let skinIndex=0;
 let startTime=Date.now();
 let lastScore=0;
+let gameActive=true;
 
 const skins=[
   {name:'萌趣小动物',icons:['🐰','🐻','🐸','🐵','🐶','🐱']},
@@ -170,8 +326,9 @@ const skins=[
 
 let icons=skins[0].icons;
 
-// 时间显示
+// 时间更新
 function updateTime(){
+  if(!gameActive) return;
   const sec=Math.floor((Date.now()-startTime)/1000);
   const m=String(Math.floor(sec/60)).padStart(2,'0');
   const s=String(sec%60).padStart(2,'0');
@@ -181,31 +338,33 @@ setInterval(updateTime,1000);
 
 // 每分钟扣10体力
 setInterval(()=>{
+  if(!gameActive || energy<=0) return;
   energy=Math.max(0,energy-10);
   render();
-  if(energy<=0) msgEl.textContent='💔 体力不足！';
+  if(energy<=0){ 
+    msgEl.textContent='💔 体力不足！'; 
+    gameActive=false;
+  }
 },60000);
 
-// 分数每100分+10体力
+// 分数奖励
 function checkScoreBonus(){
   const add=Math.floor((score-lastScore)/100)*10;
   if(add>0){
     energy+=add;
     lastScore=Math.floor(score/100)*100;
+    msgEl.textContent=`✨ 体力+${add}`;
+    setTimeout(()=>msgEl.textContent='',1200);
   }
 }
 
-function playBGM(){
-  bgm.play().catch(e=>{});
+// 音频播放优化
+function tryPlayBGM(){
+  bgm.play().catch(e=>console.log('BGM播放跳过:',e));
 }
 
-function play(type){
-  if(type==='click'){
-    if(navigator.vibrate) navigator.vibrate(20);
-  }
-  if(type==='pop'){
-    if(navigator.vibrate) navigator.vibrate([30,20,30]);
-  }
+function vibrate(pattern){
+  'vibrate' in navigator && navigator.vibrate(pattern);
 }
 
 function rand(){return icons[Math.floor(Math.random()*icons.length)]}
@@ -245,17 +404,9 @@ function render(){
   energyEl.textContent=energy;
 }
 
-function checkEnergy(){
-  if(energy<=0){
-    msgEl.textContent='💔 体力不足！';
-    return false;
-  }
-  return true;
-}
-
 function click(r,c){
-  if(!checkEnergy()) return;
-  if(steps<=0)return;
+  if(!gameActive || !checkEnergy()) return;
+  if(steps<=0){ msgEl.textContent='🎵 步数用完！'; return; }
 
   energy=Math.max(0,energy-1);
   const cell=document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
@@ -280,7 +431,7 @@ function click(r,c){
   swap(sr,sc,r,c);
   if(hasMatch()){
     steps--;
-    play('click');
+    vibrate(20);
     clearSel();
     setTimeout(process,150);
   }else{
@@ -292,7 +443,6 @@ function click(r,c){
 
 function swap(r1,c1,r2,c2){
   [grid[r1][c1],grid[r2][c2]]=[grid[r2][c2],grid[r1][c1]];
-  render();
 }
 
 function clearSel(){
@@ -334,12 +484,13 @@ function process(){
   if(matches.length===0){
     if(steps<=0){
       msgEl.textContent='🎵 步数用完，再来一曲！';
+      gameActive=false;
       return;
     }
     if(score>=level*600){
       level++;
       steps+=20;
-      energy+=100; // 通关+100体力（无上限）
+      energy+=100;
       msgEl.textContent='⭐ 倾城过关！体力+100';
       setTimeout(()=>msgEl.textContent='',1500);
     }
@@ -352,9 +503,9 @@ function process(){
     div.classList.add('pop');
     setTimeout(()=>div.classList.remove('pop'),350);
   });
-  play('pop');
+  vibrate([30,20,30]);
   score+=matches.length*10;
-  checkScoreBonus(); // 分数奖励体力
+  checkScoreBonus();
   matches.forEach(([r,c])=>grid[r][c]=null);
   setTimeout(fill,300);
   render();
@@ -378,27 +529,56 @@ function fill(){
   },50);
 }
 
+function checkEnergy(){
+  if(energy<=0){
+    msgEl.textContent='💔 体力不足！';
+    gameActive=false;
+    return false;
+  }
+  return true;
+}
+
 function init(){
-  score=0;steps=30;lastScore=0;
+  score=0;level=1;steps=30;energy=100;
+  lastScore=0;gameActive=true;startTime=Date.now();
   grid=makeGrid();
   msgEl.textContent='';
+  timeEl.textContent='00:00';
   render();
+  tryPlayBGM();
 }
 
 restartBtn.addEventListener('click',init);
 skinBtn.addEventListener('click',()=>{
   skinIndex=(skinIndex+1)%skins.length;
   icons=skins[skinIndex].icons;
-  msgEl.textContent=`🎨 已切换：${skins[skinIndex].name}`;
+  msgEl.textContent=`🎨 ${skins[skinIndex].name}`;
   setTimeout(()=>msgEl.textContent='',1200);
   grid=makeGrid();
   render();
+  tryPlayBGM();
 });
 
 openRule.addEventListener('click',()=>ruleBox.style.display='flex');
 closeRule.addEventListener('click',()=>ruleBox.style.display='none');
 
-document.addEventListener('click',playBGM,{once:true});
+openContact.addEventListener('click',(e)=>{
+  e.preventDefault();
+  contactBox.style.display='flex';
+});
+closeContact.addEventListener('click',()=>contactBox.style.display='none');
+
+// 点击弹窗外关闭
+ruleBox.addEventListener('click',(e)=>{
+  if(e.target===ruleBox) ruleBox.style.display='none';
+});
+contactBox.addEventListener('click',(e)=>{
+  if(e.target===contactBox) contactBox.style.display='none';
+});
+
+// 页面首次点击时触发BGM
+document.addEventListener('click',tryPlayBGM,{once:true});
+
 init();
 </script>
 </body>
